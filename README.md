@@ -9,43 +9,50 @@ The application implements the `WordFrequencyAnalyzer` interface with three core
 2. **calculateFrequencyForWord** - Returns the count of a specific word
 3. **calculateMostFrequentNWords** - Returns the top N words sorted by frequency (descending), then alphabetically
 
-The implementation uses a `HashMap` to count word occurrences and Java Streams for sorting and filtering results.
+Word frequency counting is cached using Caffeine to avoid redundant computations.
 
 ## Assumptions
 
 - **Case insensitivity**: "CAT" and "cat" are treated as the same word
 - **Word definition**: Only alphabetic characters form words; all other characters are separators
-- **Null/blank input**: Returns -1 or null depending on the method
+- **Null/blank input**: Returns `0` or empty list (not null or -1)
 
 ## REST Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/highest` | POST | Get highest word frequency |
-| `/word` | POST | Get frequency of a specific word |
-| `/top` | POST | Get top N most frequent words |
+| `/v1/highest` | POST | Get highest word frequency |
+| `/v1/word` | POST | Get frequency of a specific word |
+| `/v1/top` | POST | Get top N most frequent words |
 
 ### Request/Response Examples
 
-**POST /highest**
+**POST /v1/highest**
 ```json
 Request:  {"text": "the cat walks the the staircase"}
 Response: {"frequency": 3}
 ```
 
-**POST /word**
+**POST /v1/word**
 ```json
 Request:  {"text": "the cat walks the the staircase", "word": "the"}
 Response: {"frequency": 3}
 ```
 
-**POST /top**
+**POST /v1/top**
 ```json
 Request:  {"text": "the cat walks the the staircase", "n": 3}
-Response: {"words": [{"word": "the", "frequency": 3}, {"word": "cat", "frequency": 1}]}
+Response: {"words": [{"word": "the", "frequency": 3}, {"word": "cat", "frequency": 1}, {"word": "staircase", "frequency": 1}]}
 ```
 
-**Note**: Missing words return `0` (not null).
+### Validation
+
+Requests are validated:
+- `text` is required and must not be blank
+- `word` is required and must not be blank
+- `n` must be at least 1
+
+Invalid requests return a `400 Bad Request` with error details.
 
 ## Running the Application
 
@@ -53,7 +60,7 @@ Response: {"words": [{"word": "the", "frequency": 3}, {"word": "cat", "frequency
 ./mvnw spring-boot:run
 ```
 
-The server starts on port 8080 (or a random port if 8080 is busy).
+The server starts on port 8080.
 
 ## Running Tests
 
@@ -61,8 +68,9 @@ The server starts on port 8080 (or a random port if 8080 is busy).
 ./mvnw test
 ```
 
-**Note**: Tests require Java 26.
+**Requirements**: Java 26
 
 ## API Documentation
 
-An OpenAPI 3.0 specification is available at `openapi.yaml`.
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI spec: http://localhost:8080/api-docs
