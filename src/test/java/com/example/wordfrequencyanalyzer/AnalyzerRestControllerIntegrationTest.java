@@ -28,7 +28,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/highest".formatted(port))
+                        .uri("http://localhost:%d/v1/highest".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().isEqualTo("{\"frequency\":3}");
@@ -40,7 +40,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/word".formatted(port))
+                        .uri("http://localhost:%d/v1/word".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().isEqualTo("{\"frequency\":1}");
@@ -52,7 +52,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/top".formatted(port))
+                        .uri("http://localhost:%d/v1/top".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().isEqualTo("{\"words\":[{\"word\":\"the\",\"frequency\":3},{\"word\":\"cat\",\"frequency\":1},{\"word\":\"staircase\",\"frequency\":1}]}");
@@ -64,7 +64,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/highest".formatted(port))
+                        .uri("http://localhost:%d/v1/highest".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().asString().contains("Bad Request");
@@ -76,7 +76,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/word".formatted(port))
+                        .uri("http://localhost:%d/v1/word".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().asString().contains("Bad Request");
@@ -88,7 +88,7 @@ class AnalyzerRestControllerIntegrationTest {
 
         RestTestClientResponse response = RestTestClientResponse.from(
                 restTestClient.post()
-                        .uri("http://localhost:%d/top".formatted(port))
+                        .uri("http://localhost:%d/v1/top".formatted(port))
                         .body(request)
                         .exchange());
         assertThat(response).bodyJson().asString().contains("Bad Request");
