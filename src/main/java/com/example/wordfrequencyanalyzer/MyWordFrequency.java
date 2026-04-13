@@ -1,9 +1,13 @@
 package com.example.wordfrequencyanalyzer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 public class MyWordFrequency implements WordFrequency {
+    @JsonProperty("word")
     private String word;
+    
+    @JsonProperty("frequency")
     private int frequency;
 
     public MyWordFrequency(){

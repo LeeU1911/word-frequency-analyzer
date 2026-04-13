@@ -27,14 +27,13 @@ public class AnalyzerRestControllerIntegrationTest {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("text", "the cat walks the the staircase");
 
-        restTestClient.post()
-                .uri("http://localhost:%d/highest".formatted(port))
-                .body(requestBody)
-                .exchange()
-                .expectBody(Integer.class)
-                .isEqualTo(3);
+        RestTestClientResponse response = RestTestClientResponse.from(
+                restTestClient.post()
+                        .uri("http://localhost:%d/highest".formatted(port))
+                        .body(requestBody)
+                        .exchange());
+        assertThat(response).bodyJson().isEqualTo("{\"frequency\":3}");
     }
-
 
     @Test
     public void testWordRestEndpoint() {
@@ -42,14 +41,13 @@ public class AnalyzerRestControllerIntegrationTest {
         requestBody.put("text", "the cat walks the the staircase");
         requestBody.put("word", "cat");
 
-        restTestClient.post()
-                .uri("http://localhost:%d/word".formatted(port))
-                .body(requestBody)
-                .exchange()
-                .expectBody(Integer.class)
-                .isEqualTo(1);
+        RestTestClientResponse response = RestTestClientResponse.from(
+                restTestClient.post()
+                        .uri("http://localhost:%d/word".formatted(port))
+                        .body(requestBody)
+                        .exchange());
+        assertThat(response).bodyJson().isEqualTo("{\"frequency\":1}");
     }
-
 
     @Test
     public void testTopRestEndpoint() {
@@ -62,6 +60,7 @@ public class AnalyzerRestControllerIntegrationTest {
                         .uri("http://localhost:%d/top".formatted(port))
                         .body(requestBody)
                         .exchange());
-        assertThat(response).bodyJson().isEqualTo("[{\"word\":\"the\",\"frequency\":3},{\"word\":\"cat\",\"frequency\":1},{\"word\":\"staircase\",\"frequency\":1}]\n");
+        
+        assertThat(response).bodyJson().isEqualTo("{\"words\":[{\"word\":\"the\",\"frequency\":3},{\"word\":\"cat\",\"frequency\":1},{\"word\":\"staircase\",\"frequency\":1}]}");
     }
 }
