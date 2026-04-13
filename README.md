@@ -19,11 +19,33 @@ The implementation uses a `HashMap` to count word occurrences and Java Streams f
 
 ## REST Endpoints
 
-| Endpoint | Method | Description | Request Body |
-|----------|--------|-------------|--------------|
-| `/highest` | POST | Get highest word frequency | `String` (raw text) |
-| `/word` | POST | Get frequency of a specific word | `{"text": "...", "word": "..."}` |
-| `/top` | POST | Get top N most frequent words | `{"text": "...", "n": 3}` |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/highest` | POST | Get highest word frequency |
+| `/word` | POST | Get frequency of a specific word |
+| `/top` | POST | Get top N most frequent words |
+
+### Request/Response Examples
+
+**POST /highest**
+```json
+Request:  {"text": "the cat walks the the staircase"}
+Response: {"frequency": 3}
+```
+
+**POST /word**
+```json
+Request:  {"text": "the cat walks the the staircase", "word": "the"}
+Response: {"frequency": 3}
+```
+
+**POST /top**
+```json
+Request:  {"text": "the cat walks the the staircase", "n": 3}
+Response: {"words": [{"word": "the", "frequency": 3}, {"word": "cat", "frequency": 1}]}
+```
+
+**Note**: Missing words return `0` (not null).
 
 ## Running the Application
 
@@ -40,3 +62,7 @@ The server starts on port 8080 (or a random port if 8080 is busy).
 ```
 
 **Note**: Tests require Java 26.
+
+## API Documentation
+
+An OpenAPI 3.0 specification is available at `openapi.yaml`.
