@@ -1,53 +1,25 @@
 package com.example.wordfrequencyanalyzer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Objects;
 
-public class MyWordFrequency implements WordFrequency {
-    @JsonProperty("word")
-    private String word;
+public record MyWordFrequency(
+        @JsonProperty("word") String word,
+        @JsonProperty("frequency") int frequency
+) implements WordFrequency {
     
-    @JsonProperty("frequency")
-    private int frequency;
-
-    public MyWordFrequency(){
-        this.word = null;
-        this.frequency = 0;
-    }
-
-    public MyWordFrequency(String word, int frequency) {
-        this.word = word;
-        this.frequency = frequency;
-    }
-
     @Override
     public String getWord() {
-        return this.word;
+        return word();
     }
-
+    
     @Override
     public int getFrequency() {
-        return this.frequency;
+        return frequency();
     }
-
-    @Override
-    public String toString() {
-        return "MyWordFrequency{" +
-                "word='" + word + '\'' +
-                ", frequency=" + frequency +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MyWordFrequency that = (MyWordFrequency) o;
-        return frequency == that.frequency && Objects.equals(word, that.word);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(word, frequency);
+    
+    public MyWordFrequency {
+        if (word == null) {
+            throw new IllegalArgumentException("word cannot be null");
+        }
     }
 }
