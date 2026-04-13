@@ -18,9 +18,9 @@ public class AnalyzerRestController {
     }
 
     @PostMapping("highest")
-    public ResponseEntity<Integer> highest(@RequestBody String text) {
+    public ResponseEntity<Integer> highest(@RequestBody Map<String, String> body) {
         return new ResponseEntity<>(
-                this.myWordFrequencyAnalyzer.calculateHighestFrequency(text),
+                this.myWordFrequencyAnalyzer.calculateHighestFrequency(body.get("text")),
                 HttpStatusCode.valueOf(200)
         );
     }
