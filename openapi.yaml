@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: Word Frequency Analyzer API
+  description: REST API for analyzing word frequencies in text
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /highest:
+    post:
+      summary: Get highest word frequency
+      description: Analyzes the provided text and returns the frequency of the most common word
+      operationId: getHighestFrequency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequencyResponse'
+
+  /word:
+    post:
+      summary: Get frequency of a specific word
+      description: Returns the frequency count of a specified word in the given text
+      operationId: getWordFrequency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequencyResponse'
+
+  /top:
+    post:
+      summary: Get top N most frequent words
+      description: Returns the N most frequently occurring words in the given text
+      operationId: getTopWords
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopWordsRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopWordsResponse'
+
+components:
+  schemas:
+    TextRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: The text to analyze
+          example: "the cat walks the the staircase"
+
+    WordRequest:
+      type: object
+      required:
+        - text
+        - word
+      properties:
+        text:
+          type: string
+          description: The text to analyze
+          example: "the cat walks the the staircase"
+        word:
+          type: string
+          description: The word to find frequency of
+          example: "the"
+
+    TopWordsRequest:
+      type: object
+      required:
+        - text
+        - n
+      properties:
+        text:
+          type: string
+          description: The text to analyze
+          example: "the cat walks the the staircase"
+        n:
+          type: integer
+          description: Number of top words to return
+          example: 3
+
+    FrequencyResponse:
+      type: object
+      properties:
+        frequency:
+          type: integer
+          description: The word frequency count
+          example: 3
+
+    WordFrequency:
+      type: object
+      properties:
+        word:
+          type: string
+          description: The word
+          example: "the"
+        frequency:
+          type: integer
+          description: The frequency count
+          example: 3
+
+    TopWordsResponse:
+      type: object
+      properties:
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/WordFrequency'
+          example:
+            - word: "the"
+              frequency: 3
+            - word: "cat"
+              frequency: 1
