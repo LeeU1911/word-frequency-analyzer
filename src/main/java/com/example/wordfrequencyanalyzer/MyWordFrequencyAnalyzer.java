@@ -38,10 +38,10 @@ public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
     @Override
     public int calculateFrequencyForWord(String text, String word) {
         Map<String, Integer> counter = countWordFrequency(text);
-        if (counter == null) {
-            return -1;
+        if (counter == null || word == null) {
+            return 0;
         }
-        return counter.get(word.toLowerCase());
+        return counter.getOrDefault(word.toLowerCase(), 0);
     }
 
     @Override

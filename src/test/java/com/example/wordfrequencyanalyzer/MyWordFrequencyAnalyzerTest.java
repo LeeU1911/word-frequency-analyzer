@@ -13,6 +13,12 @@ public class MyWordFrequencyAnalyzerTest {
     }
 
     @Test
+    public void testCalculateFrequencyForNullWord(){
+        MyWordFrequencyAnalyzer analyzer = new MyWordFrequencyAnalyzer();
+        assertThat(analyzer.calculateFrequencyForWord("the cat is the cat", null)).isEqualTo(0);
+    }
+
+    @Test
     public void testCalculateFrequencyForWord(){
         MyWordFrequencyAnalyzer analyzer = new MyWordFrequencyAnalyzer();
         assertThat(analyzer.calculateFrequencyForWord("the cat is the cat", "is")).isEqualTo(1);
