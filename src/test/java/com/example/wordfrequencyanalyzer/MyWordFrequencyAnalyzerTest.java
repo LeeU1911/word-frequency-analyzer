@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("MyWordFrequencyAnalyzer Tests")
 class MyWordFrequencyAnalyzerTest {
-    private final MyWordFrequencyAnalyzer analyzer = new MyWordFrequencyAnalyzer();
+    private final MyWordFrequencyAnalyzer analyzer = new MyWordFrequencyAnalyzer(new WordFrequencyCacheService());
 
     @Nested
     @DisplayName("calculateHighestFrequency")
