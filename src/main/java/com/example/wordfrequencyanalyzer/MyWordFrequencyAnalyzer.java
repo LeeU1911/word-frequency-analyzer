@@ -1,5 +1,6 @@
 package com.example.wordfrequencyanalyzer;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
 public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
     private static final String SEPARATOR = "[^a-zA-Z]+";
 
-    private Map<String, Integer> countWordFrequency(String text) {
+    @Cacheable(value = "wordFrequency", key = "#text")
+    public Map<String, Integer> countWordFrequency(String text) {
         Map<String, Integer> counter = new HashMap<>();
         if (text == null || text.isBlank()) {
             return counter;
